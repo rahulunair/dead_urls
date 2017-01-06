@@ -1,20 +1,53 @@
 #!/usr/bin/env bash
-printf "%100s\n"| tr " " -
-# for each result in the regex grep output of URLs
-# curl and see if we are getting a 200/300 status
+# A simple URL status verifier
+# version 0.0.1
+
+clear
+printf "%100s\n"| tr " " =
+# LOGO :)
+#colorizer
+ESC="\033["
+BOLD=$ESC"1m"
+RESET=$ESC";0m"
+RED=$'\e[1;31m'
+MAG=$'\e[1;35m'
+cat << "EOF"
+#
+#    ____    U _____ u     _        ____       ____        _
+#   |  _"\   \| ___"|/ U  /"\  u   |  _"\   U |  _"\ u    |"|
+#  /| | | |   |  _|"    \/ _ \/   /| | | |   \| |_) |/  U | | u
+#  U| |_| |\  | |___    / ___ \   U| |_| |\   |  _ <     \| |/__
+#   |____/ u  |_____|  /_/   \_\   |____/ u   |_| \_\     |_____|
+#    |||_     <<   >>   \\    >>    |||_      //   \\_    //  \\ 
+#   (__)_)   (__) (__) (__)  (__)  (__)_)    (__)  (__)  (_")("_) ")"
+#
+#
+EOF
+echo -e "#	  ${MAG}*-A dead simple URL verifier for RST and MD docs-*${RESET}"
+echo "#"
+printf "%100s\n"| tr " " =
+# arrays used to store urls based on the test
 no_resp_urls=()
 failed_urls=()
 success_urls=()
-echo  "Verifying if URLs in *.rst and *.md documents are valid, please wait, will take few seconds..."
+
+echo -e "${BOLD}Scanning URLs in all *.rst and *.md documents in the current directory (recursive)${RESET}"
+echo  -e "${BOLD}please wait, this will take few seconds...${RESET}"
+echo -e "${BOLD}Results will be printed at the end.${RESET}"
+printf "%100s\n"| tr " " =
+
+# for each result in the regex grep output of URLs
+# curl and see if we are getting a 200/300 status
 for n in $`find . -name "*.rst" -o -name "*.md" | xargs grep -Erho "(http|https)://[^ ,\">'{}]+"  | sort | uniq` :
 do
+	printf "${BOLD}Verifying URL::${RESET} %s\n" $n
 	stat=$(curl -Is $n -m 3 | head -n 1)
 	if [ -z "${stat}" ];then
 		no_resp_urls+=($n)
 	fi
 	if [ -n "${stat}" ];then
-		s_code=$stat | cut -d " " -f 2
-		if $s_code > 399;then
+		IFS=" " read -a s_code <<< "$stat"
+		if [ "${s_code[1]}" -gt 399 ];then
 			failed_urls+=($n)
 		else
 			success_urls+=($n)
@@ -22,24 +55,37 @@ do
 	fi
 done
 
-printf "%100s\n"| tr " " -
-printf "URLs that responded with 2XX or 3XX (success) ::"
+s_count=0
+f_count=0
+n_count=0
+printf "%100s\n"| tr " " =
+printf "%100s\n\n"| tr " " =
+printf "${MAG}URLs that responded with 2XX or 3XX (success) ::${RESET}\n"
 for s in ${success_urls[@]}:
 do
+	let s_count+=1
 	printf "%s\n" "$s"
 done
-
-printf "%100s\n"| tr " " -
-printf "URLs that responded with 4XXs ::"
+printf "\n%100s\n\n"| tr " " -
+printf "${RED}URLs that responded with 4XXs ::${RESET}\n"
 for f in ${failed_urls[@]}:
 do
+	let f_count+=1
 	printf "%s\n" "$f"
 done
 
-printf "%100s\n"| tr " " -
-printf "URLs that did not return any response ::\n"
+printf "\n%100s\n\n"| tr " " -
+printf "${RED}URLs that did not return any response ::${RESET}\n"
 for n in ${no_resp_urls[@]}:
 do
+	let n_count+=1
 	printf "%s\n" "$n"
 done
-printf "%100s\n"| tr " " -
+
+let count=s_count+f_count+n_count
+printf "%100s\n"| tr " " =
+printf "${BOLD}Number of URLs that returned 2xx or 3xx:: %s${RESET}" $s_count
+printf "\n${BOLD}Number of URLs that returned 4xx:: %s${RESET}" $f_count
+printf "\n${BOLD}Number of URLs that returned no response::%s${RESET}" $n_count
+printf "\n${BOLD}Total number of URLS:: %s${RESET}\n" $count
+printf "%100s\n"| tr " " =
