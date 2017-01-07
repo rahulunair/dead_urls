@@ -1,5 +1,6 @@
 # Dead URLs
 
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
           ____    U _____ u     _        ____       ____        _
          |  _"\   \| ___"|/ U  /"\  u   |  _"\   U |  _"\ u    |"|
         /| | | |   |  _|"    \/ _ \/   /| | | |   \| |_) |/  U | | u
