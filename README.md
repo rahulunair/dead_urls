@@ -13,14 +13,19 @@
 
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
-This simple application scans all Markdown and ReStructedText
-documents in the current directory by default recursively for valid URLs.
+This simple script can be used to identify broken/failing URLs
+in your code doc. This idea is to make this CI compatible so that
+you can use it in your testing pipeline to make sure all the links
+in your document are giving appropriate responses.
+
+The script scans for Markdown and ReStructedText documents  by
+default in the current directory by recursively for valid URLs.
 If you want to give a specific location to search for, you can
 give that as an argument as well.
 
 After getting a list of URLs, it uses cURL to check the response
 header for valid status codes (2xx or 3xx). Successful, invalid and
-URLs that did not return responses are listed as part of stats at
+those URLs that did not return any response are listed as part of stats at
 the end of the run.
 
 ### Examples
