@@ -2,15 +2,16 @@
 # A simple URL status verifier
 # version 0.0.1
 clear
-URL_PATTERN="(http|https)://[^ ,\">'{}()!]+"
+# The regex pattern to identify URLs in text
+URL_PATTERN="(http|https)://[^ ,\">'{}!()]+"
 printf "%125s\n"| tr " " =
-# LOGO :)
-#colorizer
+#colors
 ESC="\033["
 BOLD=$ESC"1m"
 RESET=$ESC";0m"
 RED=$'\e[1;31m'
 MAG=$'\e[1;35m'
+# LOGO :)
 cat << "EOF"
 #
 #    ____    U _____ u     _        ____       ____        _
@@ -30,28 +31,29 @@ printf "%125s\n"| tr " " =
 no_resp_urls=()
 failed_urls=()
 success_urls=()
-
-echo -e "${BOLD}Scanning URLs in all *.rst and *.md documents in the current directory (recursive)${RESET}"
-echo  -e "${BOLD}please wait, this will take few seconds...${RESET}"
-echo -e "${BOLD}Results will be printed at the end.${RESET}"
-printf "%125s\n"| tr " " =
 # default search directory is the current directory
 arg=.
 if [ -n "${1}" ];then
 	arg=$1
 fi
-# for each result in the regex grep output of URLs
-# curl and see if we are getting a 200/300 status
-for n in $`find $arg -name "*.rst" -o -name "*.md" | xargs grep -Erho "$URL_PATTERN"  | sort | uniq` :
-do
+echo -e "${BOLD}Scanning URLs in all *.rst and *.md documents in the current directory (recursive)${RESET}"
+echo  -e "${BOLD}please wait, this will take few seconds...${RESET}"
+echo -e "${BOLD}Results will be printed at the end.${RESET}"
+ printf "%125s\n"| tr " " =
+url_array=(`find $arg -name "*.rst" -o -name "*.md" | xargs  grep -Erho "$URL_PATTERN"  | sort | uniq`)
+check_url () {
+	n=$1
+	#printf "argument inside check_url is" "$n\n"
 	if [ "${#n}" -gt 2 ];then
 		printf "${BOLD}Verifying URL${RESET}	${MAG}  =>${RESET}	%-s\n" $n
-		stat=$(curl -Is $n -m 3 | head -n 1)
+		stat=$(curl -Is -m4 -X HEAD  $n| head -n 2)
+		printf "$stat"
 		if [ -z "${stat}" ];then
-		no_resp_urls+=($n)
+			no_resp_urls+=($n)
 		fi
 		if [ -n "${stat}" ];then
-		IFS=" " read -a s_code <<< "$stat"
+			IFS=" " read -a s_code <<< "$stat"
+			printf "Scode is $scode\n"
 			if [ "${s_code[1]}" -gt 399 ];then
 				failed_urls+=($n)
 			else
@@ -59,8 +61,9 @@ do
 			fi
 		fi
 	fi
-done
-
+}
+export -f check_url
+ printf "%s\n" "${url_array[@]}" | xargs  -I {} -P 1  bash -c "check_url  {} $@"
 s_count=0
 f_count=0
 n_count=0
