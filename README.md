@@ -14,7 +14,7 @@
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
 This simple application scans all Markdown and ReStructedText
-documents in the current directory by default recursievely for valid URLs.
+documents in the current directory by default recursively for valid URLs.
 If you want to give a specific location to search for, you can
 give that as an argument as well.
 
@@ -34,5 +34,5 @@ To search a specific path, use
 ```bash
 ./check.sh /opt/path_to_doc
 ```
-Both commands will act recursievely, scanning all directories for rst/md docs.
+Both commands will act recursively, scanning all directories for rst/md docs.
 
