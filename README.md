@@ -23,7 +23,7 @@ header for valid status codes (2xx or 3xx). Successful, invalid and
 URLs that did not return responses are listed as part of stats at
 the end of the run.
 
-###Examples
+### Examples
 
 To search the current directory for md/rst docs and scan the URLs in them use:
 
