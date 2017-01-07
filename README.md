@@ -1,6 +1,5 @@
 # Dead URLs
 
-[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
           ____    U _____ u     _        ____       ____        _
          |  _"\   \| ___"|/ U  /"\  u   |  _"\   U |  _"\ u    |"|
         /| | | |   |  _|"    \/ _ \/   /| | | |   \| |_) |/  U | | u
@@ -12,6 +11,7 @@
 
                *A dead simple URL verifier for RST and MD docs*
 
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
 This simple application scans all Markdown and ReStructedText
 documents in the current directory recursievely for valid URLs.
