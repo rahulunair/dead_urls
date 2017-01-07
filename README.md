@@ -33,13 +33,13 @@ the end of the run.
 To search the current directory for md/rst docs and scan the URLs in them use:
 
 ```
-./check.sh
+./deadrl.sh
 ```
 
 To search a specific path, use:
 
 ```
-./check.sh /opt/path_to_doc
+./deadrl.sh /opt/path_to_doc
 ```
 
 Both commands will act recursively, scanning all directories for rst/md docs.
