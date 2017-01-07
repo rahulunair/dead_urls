@@ -26,10 +26,13 @@ the end of the run.
 Examples,
 
 To search the current directory for md/rst docs and scan the URLs in them use,
-    ./check.sh
+```bash
+./check.sh
+```
 
 To search a specific path, use
-    ./check.sh /opt/path_to_doc
-
+```bash
+./check.sh /opt/path_to_doc
+```
 Both commands will act recursievely, scanning all directories for rst/md docs.
 
