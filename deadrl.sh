@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # A simple URL status verifier
 # version 0.0.1
-
 clear
+URL_PATTERN="(http|https)://[^ ,\">'{}()!]+"
 printf "%125s\n"| tr " " =
 # LOGO :)
 #colorizer
@@ -42,7 +42,7 @@ if [ -n "${1}" ];then
 fi
 # for each result in the regex grep output of URLs
 # curl and see if we are getting a 200/300 status
-for n in $`find $arg -name "*.rst" -o -name "*.md" | xargs grep -Erho "(http|https)://[^ ,\">'{}]+"  | sort | uniq` :
+for n in $`find $arg -name "*.rst" -o -name "*.md" | xargs grep -Erho "$URL_PATTERN"  | sort | uniq` :
 do
 	if [ "${#n}" -gt 2 ];then
 		printf "${BOLD}Verifying URL${RESET}	${MAG}  =>${RESET}	%-s\n" $n
