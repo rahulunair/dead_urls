@@ -13,6 +13,20 @@
 
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
+This is the parallel version of `deadrl` . I have used xargs
+to spawn 10 process to curl and print the result. This is still
+experimental and doesnot have the stats on the number of URLs
+scanned and how many failures where there etc. These features
+and other things will be added in course of time.
+
+As always this simple script just works, point it to a
+path or run it inside of your code directory and the script will
+recursively fetch all markdown and ReSTructed documents and will
+display the URLs that the script feels are dead/stale.
+
+The following is a description of the script, from the master
+branch:
+
 This simple script can be used to identify broken/failing URLs
 in your code doc. This idea is to make this CI compatible so that
 you can use it in your testing pipeline to make sure all the links
@@ -43,4 +57,3 @@ To search a specific path, use:
 ```
 
 Both commands will act recursively, scanning all directories for rst/md docs.
-
