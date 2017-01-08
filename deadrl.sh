@@ -2,6 +2,8 @@
 # A simple URL status verifier
 # version 0.0.1
 clear
+# suppressing errors, uncomment this line to enable debugging
+exec 2> /dev/null
 # The regex pattern to identify URLs in text
 URL_PATTERN="(http|https)://[^ ,\">'{}!()]+"
 printf "%125s\n"| tr " " =
@@ -52,8 +54,10 @@ check_url () {
 			printf "${BOLD}URL timed out ${RESET}	${MAG}  =>${RESET}	%-s\n" $n
 		fi
 		if [ -n "${stat}" ];then
+			# uncomment to debug
 			# set -xv
 			if [ $s_code -gt 399 ];then
+			# uncomment to debug
 				# set +xv
 				printf "${RED}URL returned a 4XX or a 5XX${RESET}	${MAG}  =>${RESET}	%-s\n" $n
 			fi
