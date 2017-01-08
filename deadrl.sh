@@ -6,40 +6,10 @@ clear
 exec 2> /dev/null
 # The regex pattern to identify URLs in text
 URL_PATTERN="(http|https)://[^ ,\">'{}!()]+"
-printf "%125s\n"| tr " " =
-#colors
-ESC="\033["
-BOLD=$ESC"1m"
-RESET=$ESC";0m"
-RED=$'\e[1;31m'
-MAG=$'\e[1;35m'
-# LOGO :)
-cat << "EOF"
-#
-#    ____    U _____ u     _        ____       ____        _
-#   |  _"\   \| ___"|/ U  /"\  u   |  _"\   U |  _"\ u    |"|
-#  /| | | |   |  _|"    \/ _ \/   /| | | |   \| |_) |/  U | | u
-#  U| |_| |\  | |___    / ___ \   U| |_| |\   |  _ <     \| |/__
-#   |____/ u  |_____|  /_/   \_\   |____/ u   |_| \_\     |_____|
-#    |||_     <<   >>   \\    >>    |||_      //   \\_    //  \\ 
-#   (__)_)   (__) (__) (__)  (__)  (__)_)    (__)  (__)  (_")("_) ")"
-#
-#
-EOF
-echo -e "#	  ${MAG}*-A dead simple URL verifier for RST and MD docs-*${RESET}"
-echo "#"
-printf "%125s\n"| tr " " =
-# default search directory is the current directory
-arg=.
-if [ -n "${1}" ];then
-	arg=$1
-fi
-echo -e "${BOLD}Scanning URLs in all *.rst and *.md documents in the current directory (recursive)${RESET}"
-echo  -e "${BOLD}Please wait, this will take a few seconds...${RESET}"
-printf "%125s\n"| tr " " =
-S_TIME=$SECONDS
-url_array=(`find $arg -name "*.rst" -o -name "*.md" | xargs  -P 4 grep -Erho "$URL_PATTERN"  | sort | uniq`)
+# Color settings and LOGO
+source color_LOGO.sh
 check_url () {
+	# check_url: Tries to curl a supplied url and prints out dead/stale URLs
 	#colors
 	ESC="\033["
 	BOLD=$ESC"1m"
@@ -52,7 +22,10 @@ check_url () {
 		s_array=($stat)
 		s_code=${s_array[1]}
 		if [ -z "${stat}" ];then
-			printf "${BOLD}URL timed out ${RESET}	${MAG}  =>${RESET}	%-s\n" $n
+		    file_path=`grep -rl $n $file_path`
+			printf "${BOLD}URL timed out ${RESET}	${MAG}  =>${RESET}	%-s\n" "$n"
+			printf "${BOLD}File path     ${RESET}   ${MAG} =|${RESET}\n"
+			printf "%-s\n" "$file_path"
 		fi
 		if [ -n "${stat}" ];then
 			# uncomment to debug
@@ -60,14 +33,37 @@ check_url () {
 			if [ $s_code -gt 399 ];then
 			# uncomment to debug
 				# set +xv
-				printf "${RED}URL returned a 4XX or a 5XX${RESET}	${MAG}  =>${RESET}	%-s\n" $n
+				file_path=`grep -rl $n $file_path`
+				printf "${BOLD}URL timed out ${RESET}	${MAG}  =>${RESET}	%-s\n" "$n"
+				printf "${BOLD}File path     ${RESET}   ${MAG} =|${RESET}\n"
+				printf "%-s\n" "$file_path"
 			fi
 		fi
 	fi
 }
+# default search directory is the current directory
+arg=.
+if [ -n "${1}" ];then
+	arg=$1
+fi
+file_path=$arg
+export file_path
+echo -e "${BOLD}Scanning URLs in all *.rst and *.md documents in the current directory (recursive)${RESET}"
+echo  -e "${BOLD}Please wait, this will take a few seconds...${RESET}"
+printf "%125s\n"| tr " " =
+S_TIME=$SECONDS
+url_array=(`find $arg -name "*.rst" -o -name "*.md" | xargs  -P 4 grep -Erho "$URL_PATTERN"  | sort | uniq`)
+# Exports check_url function and is called for each URL (10 URLs are checked at one time, _p 10)
 export -f check_url
 printf "%s\n" "${url_array[@]}" | xargs  -I {} -P 10  bash -c "check_url  {} $@"
+
+# stats and final output
+count_urls=${#url_array[@]}
+if [ -z "$count_urls" ];then
+	count_urls=0
+fi
 F_TIME=$(( SECONDS - S_TIME ))
 printf "%125s\n"| tr " " =
-printf "Scan complete! Total time taken: %s seconds.\n" "$F_TIME"
+printf "Scan complete! Total number of URLs scanned: %s\n" "$count_urls" 
+printf "Time taken: %s seconds.\n" "$F_TIME"
 printf "%125s\n"| tr " " =
