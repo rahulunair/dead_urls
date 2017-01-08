@@ -36,7 +36,8 @@ if [ -n "${1}" ];then
 fi
 echo -e "${BOLD}Scanning URLs in all *.rst and *.md documents in the current directory (recursive)${RESET}"
 echo  -e "${BOLD}Please wait, this will take a few seconds...${RESET}"
- printf "%125s\n"| tr " " =
+printf "%125s\n"| tr " " =
+S_TIME=$SECONDS
 url_array=(`find $arg -name "*.rst" -o -name "*.md" | xargs  -P 4 grep -Erho "$URL_PATTERN"  | sort | uniq`)
 check_url () {
 	#colors
@@ -47,7 +48,7 @@ check_url () {
 	MAG=$'\e[1;35m'
 	n=$1
 	if [ "${#n}" -gt 2 ];then
-		stat=$(curl -Is -m 10 $n | head -n +1)
+		stat=$(curl -Is -m 7 $n | head -n +1)
 		s_array=($stat)
 		s_code=${s_array[1]}
 		if [ -z "${stat}" ];then
@@ -66,6 +67,7 @@ check_url () {
 }
 export -f check_url
 printf "%s\n" "${url_array[@]}" | xargs  -I {} -P 10  bash -c "check_url  {} $@"
+F_TIME=$(( SECONDS - S_TIME ))
 printf "%125s\n"| tr " " =
-printf "Scan complete!\n"
+printf "Scan complete! Total time taken: %s seconds.\n" "$F_TIME"
 printf "%125s\n"| tr " " =
