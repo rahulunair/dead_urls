@@ -2,6 +2,8 @@
 # A simple URL status verifier
 # version 0.0.1
 clear
+#suppressing errors, uncomment to debug
+exec 2> /dev/null
 URL_PATTERN="(http|https)://[^ ,\">'{}()!]+"
 printf "%125s\n"| tr " " =
 # LOGO :)
