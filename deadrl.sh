@@ -42,6 +42,7 @@ arg=.
 if [ -n "${1}" ];then
 	arg=$1
 fi
+TIMER_START=$SECONDS
 # for each result in the regex grep output of URLs
 # curl and see if we are getting a 200/300 status
 for n in $`find $arg -name "*.rst" -o -name "*.md" | xargs grep -Erho "$URL_PATTERN"  | sort | uniq` :
@@ -66,8 +67,8 @@ done
 s_count=0
 f_count=0
 n_count=0
+TOTAL_TIME=$(( SECONDS - TIME_START ))
 printf "%125s\n"| tr " " =
-printf "Scanning complete!\n"
 printf "%125s\n\n"| tr " " =
 printf "\nResults ::\n"
 printf "${MAG}URLs that responded with 2XX or 3XX (success) ::${RESET}\n"
@@ -94,6 +95,7 @@ done
 
 let count=s_count+f_count+n_count
 printf "%125s\n"| tr " " =
+printf "Scanning complete! Total time taken: %s seconds.\n" "$TOTAL_TIME"
 printf "${BOLD}Number of URLs that returned 2xx or 3xx:: %s${RESET}" $s_count
 printf "\n${BOLD}Number of URLs that returned 4xx:: %s${RESET}" $f_count
 printf "\n${BOLD}Number of URLs that returned no response::%s${RESET}" $n_count
