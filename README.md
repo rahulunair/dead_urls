@@ -13,7 +13,7 @@
 
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
-This is the parallel version of `deadrl` . I have used xargs
+This is the **parallel** version of `deadrl` . I have used xargs
 to spawn 10 process to curl and print the result. This is still
 experimental and doesnot have the stats on the number of URLs
 scanned and how many failures where there etc. These features
