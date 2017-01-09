@@ -19,7 +19,7 @@ experimental and does not have the stats on the number of failures etc.
 
 As always this simple script just works, point it to a
 path or run it inside of your code directory and the script will
-recursively fetch all markdown and ReSTructed documents and will
+recursively identify all markdown and ReSTructed documents and will
 display the URLs that the script feels are dead(4xx/5xx)/stale(no response).
 
 The following is a description of the script, from the master
