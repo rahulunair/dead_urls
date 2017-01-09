@@ -46,3 +46,9 @@ To search a specific path, use:
 
 Both commands will act recursively, scanning all directories for rst/md docs.
 
+### Parallel deadrl
+
+A parallel version of deadrl, which is much faster, is also available, it has
+a few things missing in terms of stats, but works as intended. Please see
+[parallel deadrl](https://github.com/rahulunair/deadrl/tree/parallel_deadrl "parallel_deadrl").
+
