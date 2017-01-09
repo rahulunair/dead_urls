@@ -32,7 +32,7 @@ the end of the run.
 
 ## Usage
 
-Download a copy of `deadrl from` [deadrl](https://github.com/rahulunair/deadrl/tree/parallel_deadrl)
+Download a copy of `deadr` from [deadrl](https://github.com/rahulunair/deadrl/tree/parallel_deadrl)
 using git.
 
 ```bash
