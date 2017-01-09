@@ -45,7 +45,7 @@ for n in $`find $arg -name "*.rst" -o -name "*.md" | xargs grep -Erho "$URL_PATT
 do
 	if [ "${#n}" -gt 2 ];then
 		printf "${BOLD}Verifying URL${RESET}	${MAG}  =>${RESET}	%-s\n" $n
-		stat=$(curl -Is $n -m 3 | head -n 1)
+		stat=$(curl -Is $n -m 5 | head -n 1)
 		if [ -z "${stat}" ];then
 		no_resp_urls+=($n)
 		fi
