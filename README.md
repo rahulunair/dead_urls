@@ -35,7 +35,8 @@ the end of the run.
 Download a copy of `deadrl from` [deadrl](https://github.com/rahulunair/deadrl/tree/parallel_deadrl)
 using git.
 
-```git clone https://github.com/rahulunair/deadrl/tree/parallel_deadrl.git
+```bash
+git clone https://github.com/rahulunair/deadrl/tree/parallel_deadrl.git
 ```
 
 That's it, cd into `deadrl` directory and try these examples below.
@@ -44,13 +45,13 @@ That's it, cd into `deadrl` directory and try these examples below.
 
 To search the current directory for md/rst docs and scan the URLs in them use:
 
-```
+```bash
 ./deadrl.sh
 ```
 
 To search a specific path, use:
 
-```
+```bash
 ./deadrl.sh /opt/path_to_doc
 ```
 
