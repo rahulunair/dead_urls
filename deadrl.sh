@@ -33,22 +33,22 @@ check_url () {
 	if [ "${#n}" -gt 2 ];then
 		# giving timeout as 10 seconds
 		# so that even if network speed is low, curl waits for 10 sec to try and recieve a response
-		stat=$(curl -Is -m 10 $n | head -n +1)
+		stat=$(curl -Is -m 5 $n | head -n +1)
 		s_array=($stat)
 		s_code=${s_array[1]}
-		if [ -z "${stat}" ];then
-		    file_path=`grep -rl $n $file_path`
-			printf "${BOLD}URL timed out ${RESET}	${MAG}  =>${RESET}    ${BLU}%-s\n${RESET}" "$n"
-			printf "${BOLD}File path     ${RESET}   ${MAG} =|${RESET}\n"
-			printf "%-s\n" "$file_path"
-		fi
+		#if [ -z "${stat}" ];then
+			# file_path=`grep -rl --include \*.rst --include \*.md $n $file_path`
+	#		printf "${BOLD}URL timed out ${RESET}	${MAG}  =>${RESET}    ${BLU}%-s\n${RESET}" "$n"
+	#		printf "${BOLD}File path     ${RESET}   ${MAG} =|${RESET}\n"
+#			printf "%-s\n" "$file_path"
+#		fi
 		if [ -n "${stat}" ];then
 			# uncomment to debug
 			# set -xv
 			if [ $s_code -gt 399 ];then
 			# uncomment to debug
 				# set +xv
-				file_path=`grep -rl $n $file_path`
+				file_path=`grep -rl --include \*.rst --include \*.md $n $file_path`
 				printf "${BOLD}URL returned 4XX or 5XX ${RESET}	${MAG}  =>${RESET}	  ${RED}%-s${RESET}\n" "$n"
 				printf "${BOLD}File path     ${RESET}   ${MAG} =|${RESET}\n"
 				printf "%-s\n" "$file_path"
