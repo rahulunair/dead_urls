@@ -8,11 +8,7 @@ URL_PATTERN="(http|https)://[^ ,\">'{}()!]+"
 printf "%125s\n"| tr " " =
 # LOGO :)
 #colorizer
-ESC="\033["
-BOLD=$ESC"1m"
-RESET=$ESC";0m"
-RED=$'\e[1;31m'
-MAG=$'\e[1;35m'
+source colors.sh
 cat << "EOF"
 #
 #    ____    U _____ u     _        ____       ____        _
@@ -86,7 +82,7 @@ do
 done
 
 printf "\n%125s\n\n"| tr " " -
-printf "${RED}URLs that did not return any response ::${RESET}\n"
+printf "${BLU}URLs that did not return any response ::${RESET}\n"
 for n in ${no_resp_urls[@]}:
 do
 	let n_count+=1
@@ -95,7 +91,7 @@ done
 
 let count=s_count+f_count+n_count
 printf "%125s\n"| tr " " =
-printf "Scanning complete! Total time taken: %s seconds.\n" "$TOTAL_TIME"
+printf "${BOLD}Scanning complete! Total time taken: %s seconds.${RESET}\n" "$TOTAL_TIME"
 printf "${BOLD}Number of URLs that returned 2xx or 3xx:: %s${RESET}" $s_count
 printf "\n${BOLD}Number of URLs that returned 4xx:: %s${RESET}" $f_count
 printf "\n${BOLD}Number of URLs that returned no response::%s${RESET}" $n_count
