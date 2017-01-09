@@ -30,7 +30,17 @@ header for valid status codes (2xx or 3xx). Successful, invalid and
 those URLs that did not return any response are listed as part of stats at
 the end of the run.
 
-## Examples
+## Usage
+
+Download a copy of `deadrl from` [deadrl](https://github.com/rahulunair/deadrl/tree/parallel_deadrl)
+using git.
+
+```git clone https://github.com/rahulunair/deadrl/tree/parallel_deadrl.git
+```
+
+That's it, cd into `deadrl` directory and try these examples below.
+
+### Examples
 
 To search the current directory for md/rst docs and scan the URLs in them use:
 
