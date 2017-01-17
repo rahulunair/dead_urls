@@ -50,6 +50,9 @@ check_url () {
 				# set +xv
 				file_path=`grep -rl --include \*.rst --include \*.md $n $file_path`
 				printf "${BOLD}URL returned 4XX  ${RESET} ${MAG}  =>${RESET}	  ${RED}%-s${RESET}\n" "$n"
+				echo  "${BOLD}URL returned 4XX  ${RESET} ${MAG}  =>${RESET}	  ${RED}%-s${RESET} $n" >> 4xx.txt
+				echo  "${BOLD}File path     ${RESET}   ${MAG} =|${RESET}\n" >> 4xx.txt
+				echo "%-s\n" "$file_path" >> 4xx.txt
 				printf "${BOLD}File path     ${RESET}   ${MAG} =|${RESET}\n"
 				printf "%-s\n" "$file_path"
 				printf "\n"
