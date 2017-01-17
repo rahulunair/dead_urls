@@ -23,7 +23,7 @@ echo -e "#	  ${MAG}*-A dead simple URL verifier for RST and MD docs-*${RESET}"
 echo "#"
 printf "%125s\n"| tr " " =
 # The regex pattern to identify URLs in text
-URL_PATTERN="(http|https)://[^ ,\">'{}!()]+"
+URL_PATTERN="(http|https)://[^ ,\">'{}!()]+(\. )?$"
 # Color settings and LOGO
 check_url () {
 	# check_url: Tries to curl a supplied url and prints out dead/stale URLs
@@ -45,13 +45,23 @@ check_url () {
 		if [ -n "${stat}" ];then
 			# uncomment to debug
 			# set -xv
-			if [ $s_code -gt 399 ];then
+			if [ $s_code -gt 399 ] && [ $s_code -lt 499 ];then
 			# uncomment to debug
 				# set +xv
 				file_path=`grep -rl --include \*.rst --include \*.md $n $file_path`
-				printf "${BOLD}URL returned 4XX or 5XX ${RESET}	${MAG}  =>${RESET}	  ${RED}%-s${RESET}\n" "$n"
+				printf "${BOLD}URL returned 4XX  ${RESET} ${MAG}  =>${RESET}	  ${RED}%-s${RESET}\n" "$n"
 				printf "${BOLD}File path     ${RESET}   ${MAG} =|${RESET}\n"
 				printf "%-s\n" "$file_path"
+				printf "\n"
+			fi
+			if [ $s_code -gt 499 ];then
+			# uncomment to debug
+				# set +xv
+				file_path=`grep -rl --include \*.rst --include \*.md $n $file_path`
+				printf "${BOLD}URL returned 5XX ${RESET}	${MAG}  =>${RESET}	  ${RED}%-s${RESET}\n" "$n"
+				printf "${BOLD}File path  ${RESET}   ${MAG} =|${RESET}\n"
+				printf "%-s\n" "$file_path"
+				printf "\n"
 			fi
 		fi
 	fi
